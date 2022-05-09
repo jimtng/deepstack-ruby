@@ -1,0 +1,17 @@
+AllCops:
+  TargetRubyVersion: 2.6
+  NewCops: enable
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Gemspec/RequireMFA:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
