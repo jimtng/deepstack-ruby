@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-module Deepstack
+module DeepStackModule
   # Scene Recognition
   module Scene
     #
     # Return
     #
     # @param [Object] image binary data or a File object
-    # @param [Hash] options additional fields for Deepstack, e.g. min_confidence: 0.5
+    # @param [Hash] options additional fields for DeepStack, e.g. min_confidence: 0.5
     #
-    # @return [Hash] if successful, Deepstack result hash {'label' => 'scene', 'confidence' => 2.2}
+    # @return [Hash] if successful, DeepStack result hash {'label' => 'scene', 'confidence' => 2.2}
     #
     # @return [nil] if error
     def identify_scene(image, **options)

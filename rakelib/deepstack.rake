@@ -22,7 +22,7 @@ namespace :deepstack do
   task :start do
     next if deepstack_running?
 
-    puts 'Starting Deepstack docker...'
+    puts 'Starting DeepStack docker...'
     cmd = %(
       docker run
           --name #{@image_name}
@@ -39,7 +39,7 @@ namespace :deepstack do
 
   desc 'Stop deepstack test docker'
   task :stop do
-    puts 'Stopping Deepstack docker...'
+    puts 'Stopping DeepStack docker...'
     `docker stop #{@image_name}` if deepstack_running?
   end
 end

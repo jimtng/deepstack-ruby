@@ -4,11 +4,11 @@ require_relative 'lib/deepstack/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'deepstack'
-  spec.version       = Deepstack::VERSION
+  spec.version       = DeepStack::VERSION
   spec.authors       = ['Jimmy Tanagra']
   spec.email         = ['jcode@tanagra.id.au']
 
-  spec.summary       = 'A Ruby wrapper for Deepstack API'
+  spec.summary       = 'A Ruby wrapper for DeepStack API'
   spec.homepage      = 'https://github.com/jimtng/deepstack-ruby'
   spec.license       = 'EPL-2.0'
   spec.required_ruby_version = '>= 2.6.0'

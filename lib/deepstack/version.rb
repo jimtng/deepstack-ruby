@@ -3,7 +3,7 @@
 #
 # Holds project version constant
 #
-module Deepstack
-  # @return [String] Version of Deepstack helper libraries
-  VERSION = '0.0.1'
+class DeepStack
+  # @return [String] Version of DeepStack helper libraries
+  VERSION = '1.0.0'
 end
