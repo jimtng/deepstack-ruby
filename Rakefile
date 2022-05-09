@@ -5,9 +5,9 @@ require 'rspec/core/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 
-require 'rubocop/rake_task'
+# require 'rubocop/rake_task'
 
-RuboCop::RakeTask.new
+# RuboCop::RakeTask.new
 
 # task default: %i[rubocop deepstack:start spec deepstack:stop]
-task default: %i[rubocop deepstack:start spec]
+task default: %i[deepstack:start spec]
