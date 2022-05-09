@@ -1,11 +1,11 @@
-# Deepstack
+# Deepstack Ruby
 
 A Ruby wrapper for [Deepstack](https://www.deepstack.cc/) HTTP API
 
 ## Usage
 
 ```ruby
-deepstack = DeepStack::API.new('http://192.168.1.10:2000')
+deepstack = Deepstack::API.new('http://192.168.1.10:2000')
 image = File.read('image.jpg')
 
 # Find bounding rects for objects
