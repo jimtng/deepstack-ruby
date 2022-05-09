@@ -16,14 +16,14 @@ def deepstack_baseurl
 end
 
 def deepstack
-  @deepstack ||= Deepstack::API.new(deepstack_baseurl)
+  @deepstack ||= DeepStack.new(deepstack_baseurl)
 end
 
 # rubocop:disable Metrics/BlockLength
-RSpec.describe Deepstack do
+RSpec.describe DeepStack do
   context 'Basic Usage' do
     it 'has a version number' do
-      expect(Deepstack::VERSION).not_to be_nil
+      expect(DeepStack::VERSION).not_to be_nil
     end
 
     it 'can be initialized with a url' do

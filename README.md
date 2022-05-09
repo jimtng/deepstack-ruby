@@ -1,11 +1,11 @@
-# Deepstack Ruby
+# DeepStack Ruby
 
-A Ruby wrapper for [Deepstack](https://www.deepstack.cc/) HTTP API
+A Ruby wrapper for [DeepStack](https://www.deepstack.cc/) HTTP API
 
 ## Usage
 
 ```ruby
-deepstack = Deepstack::API.new('http://192.168.1.10:2000')
+deepstack = DeepStack.new('http://192.168.1.10:2000')
 image = File.read('image.jpg')
 
 # Find bounding rects for objects
@@ -36,13 +36,13 @@ See the [documentation](https://www.rubydoc.info/gems/deepstack) for more detail
 
 ## Development
 
-A Linux development machine is needed in order to run the tests. The test will launch a Deepstack docker instance
+A Linux development machine is needed in order to run the tests. The test will launch a DeepStack docker instance
 to test against. By default, the deepstack docker will listen on port `81`. To change this, copy `rakelib/deepstack.yml.sample` to `rakelib/deepstack.yml` 
 and change the port number as required.
 
 To run the tests run `rake`.
 
-To manually stop the Deepstack docker instance, run `rake deepstack:stop`
+To manually stop the DeepStack docker instance, run `rake deepstack:stop`
 
 To install this gem onto your local machine, run `bundle exec rake install`. 
 

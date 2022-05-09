@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-module Deepstack
+module DeepStackModule
   # APIs related to object detection
   module Detection
     #
     # Perform object detection
     #
     # @param [Object] image raw image data or a File object of an image file
-    # @param [Hash] options additional fields for Deepstack, e.g. min_confidence: 0.5
+    # @param [Hash] options additional fields for DeepStack, e.g. min_confidence: 0.5
     #
     # @return [Array] a list of predictions, or nil on error
     #

@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-module Deepstack
+module DeepStackModule
   # APIs related to face recognition
   module Face
     #
     # Perform face recognition
     #
     # @param [Object] image binary data or a File object
-    # @param [Hash] options additional fields for Deepstack, e.g. min_confidence: 0.5
+    # @param [Hash] options additional fields for DeepStack, e.g. min_confidence: 0.5
     #
-    # @return [Array] if successful, an array of Deepstack predictions
+    # @return [Array] if successful, an array of DeepStack predictions
     #
     # @return [nil] if error
     #
@@ -23,9 +23,9 @@ module Deepstack
     # Detect faces in an image
     #
     # @param [Object] image binary data or a File object
-    # @param [Hash] options additional fields for Deepstack, e.g. min_confidence: 0.5
+    # @param [Hash] options additional fields for DeepStack, e.g. min_confidence: 0.5
     #
-    # @return [Array] if successful, an array of Deepstack predictions
+    # @return [Array] if successful, an array of DeepStack predictions
     #
     def detect_faces(image, **options)
       target = 'vision/face/' # the URL ends with a slash
