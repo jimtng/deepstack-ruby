@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'lib/deepstack/version'
+require_relative 'lib/deep_stack/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'deepstack'
