@@ -16,7 +16,7 @@ plugins:
   - - "@semantic-release/git"
     - assets:
         - CHANGELOG.md
-        - lib/deepstack/version.rb
+        - lib/deep_stack/version.rb
         - Gemfile.lock
   - - "@semantic-release/github"
     - assets:

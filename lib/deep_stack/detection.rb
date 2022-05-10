@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module DeepStackModule
+class DeepStack
   # APIs related to object detection
   module Detection
     #
