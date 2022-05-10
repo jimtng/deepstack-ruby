@@ -1,10 +1,14 @@
-name: Tests
+name: DeepStack Ruby Wrapper
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   commit-lint:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,6 +17,7 @@ jobs:
       - uses: wagoid/commitlint-github-action@v4
 
   yard-coverage:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -24,6 +29,7 @@ jobs:
           bundle exec yard stats | grep "100.00% documented"
 
   rubocop:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,6 +40,7 @@ jobs:
         run: bundle exec rubocop
 
   test:
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
     runs-on: ubuntu-latest
 
     strategy:
@@ -49,3 +56,29 @@ jobs:
           bundler-cache: true
       - name: Run tests
         run: bundle exec rake
+
+  release:
+    needs: test
+    if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'ci skip')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "lts/*"
+      - name: Install Semantic Release
+        run: |
+          npm install semantic-release@^17.0.0
+          npm install @semantic-release/changelog@^5.0.0 -D
+          npm install @semantic-release/git@^9.0.0 -D
+          npm install semantic-release-rubygem@^1.0.0 -D
+          npm install conventional-changelog-conventionalcommits@^4.0.0 -D
+          npm install @semantic-release/changelog@^5.0.0 -D
+      - name: Release
+        env:
+          GEM_HOST_API_KEY: ${{secrets.RUBYGEMS_API_KEY}}
+        run: |
+          npx semantic-release
