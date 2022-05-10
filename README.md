@@ -1,7 +1,25 @@
 # DeepStack Ruby Wrapper
 
-[![GitHub version](https://badge.fury.io/gh/jimtng%2Fdeepstack-ruby.svg)](https://github.com/jimtng/deepstack-ruby)
-[![Gem Version](https://badge.fury.io/rb/deepstack.svg)](https://rubygems.org/gems/deepstack)
+<p align="center">
+  <a href="https://github.com/jimtng/deepstack-ruby/releases">
+    <img alt="GitHub release (latest SemVer including pre-releases)" src="https://img.shields.io/github/v/release/jimtng/deepstack-ruby?include_prereleases"/>
+  </a>
+  <a href="https://github.com/jimtng/deepstack-ruby/actions/workflows/workflow.yml?query=event%3Apush">
+    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/jimtng/deepstack-ruby/DeepStack Ruby Wrapper"/>
+  </a>
+  <a href="https://github.com/jimtng/deepstack-ruby/graphs/contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/jimtng/deepstack-ruby"/>
+  </a>
+  <a href="https://github.com/jimtng/deepstack-ruby/graphs/commit-activity">
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/jimtng/deepstack-ruby">
+  </a>
+  <a href="https://semver.org/">
+    <img alt="SemVer version observance" src="https://img.shields.io/badge/semver-2.0.0-blue"/>
+  </a>
+  <a href="https://conventionalcommits.org/">
+      <img alt="Convention commits observance" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg"/>
+  </a>
+</p>
 
 A Ruby wrapper for [DeepStack](https://www.deepstack.cc/) HTTP API
 
