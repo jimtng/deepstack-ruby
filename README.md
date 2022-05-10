@@ -1,10 +1,17 @@
-# DeepStack Ruby
+# DeepStack Ruby Wrapper
+
+[![GitHub version](https://badge.fury.io/gh/jimtng%2Fdeepstack-ruby.svg)](https://github.com/jimtng/deepstack-ruby)
+[![Gem Version](https://badge.fury.io/rb/deepstack.svg)](https://rubygems.org/gems/deepstack)
 
 A Ruby wrapper for [DeepStack](https://www.deepstack.cc/) HTTP API
 
 ## Usage
 
+Install the gem with `gem install deepstack`
+
 ```ruby
+require 'deepstack'
+
 deepstack = DeepStack.new('http://192.168.1.10:2000')
 image = File.read('image.jpg')
 
@@ -44,11 +51,7 @@ To run the tests run `rake`.
 
 To manually stop the DeepStack docker instance, run `rake deepstack:stop`
 
-To install this gem onto your local machine, run `bundle exec rake install`. 
-
-To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, 
-which will create a git tag for the version, push git commits and the created tag, and push 
-the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
