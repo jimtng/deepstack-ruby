@@ -129,5 +129,13 @@ RSpec.describe DeepStack do
       expect(result.keys).to include(*%w[confidence label])
     end
   end
+
+  context 'HTTP Persistence' do
+    it 'can close and reopen its http connection' do
+      deepstack.close
+      result = deepstack.face_list
+      expect(result).to be_an Array
+    end
+  end
 end
 # rubocop:enable Metrics/BlockLength
