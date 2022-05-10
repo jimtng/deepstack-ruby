@@ -8,10 +8,9 @@ on:
 jobs:
   # From: https://andrewm.codes/blog/automating-ruby-gem-releases-with-github-actions/
   release:
-    needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v3
+      - uses: google-github-actions/release-please-action@v3
         id: release
         with:
           release-type: ruby
