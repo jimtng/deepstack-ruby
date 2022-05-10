@@ -13,8 +13,7 @@ class DeepStack
     #
     def detect_objects(image, **options)
       target = 'vision/detection'
-      api_post(target, image, **options)
-      predictions
+      api_post(target, image, **options)&.dig('predictions')
     end
   end
 end

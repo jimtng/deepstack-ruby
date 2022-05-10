@@ -36,8 +36,7 @@ class DeepStack
     #
     def custom_inference(model, image, **options)
       target = "vision/custom/#{model}"
-      api_post(target, image, options)
-      predictions
+      api_post(target, image, options)&.dig('predictions')
     end
   end
 end

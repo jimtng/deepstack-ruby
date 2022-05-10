@@ -16,20 +16,9 @@ class DeepStack
   include DeepStack::Scene
   include DeepStack::Custom
 
-  attr_reader :duration, :predictions, :success
-
   # Create a deepstack object connected to the given URL
   def initialize(base_url)
     @base_url = base_url
-  end
-
-  #
-  # The result of the last call
-  #
-  # @return [Boolean] true if the last call was successful
-  #
-  def success?
-    @success == true
   end
 
   #
@@ -102,8 +91,6 @@ class DeepStack
   end
 
   def process_result(result)
-    @result = result.is_a?(Net::HTTPSuccess) ? JSON.parse(result.body) : nil
-    %w[success duration predictions].each { |attrib| instance_variable_set("@#{attrib}", @result&.dig(attrib)) }
-    @result
+    result.is_a?(Net::HTTPSuccess) ? JSON.parse(result.body) : nil
   end
 end
