@@ -19,6 +19,7 @@ class DeepStack
   # Create a deepstack object connected to the given URL
   def initialize(base_url)
     @base_url = base_url
+    @http_mutex = Mutex.new
   end
 
   #
@@ -45,6 +46,16 @@ class DeepStack
     process_result(result)
   end
 
+  #
+  # Close the HTTP connection to DeepStack server
+  #
+  def close
+    @http_mutex.synchronize do
+      @http&.finish
+      @http = nil
+    end
+  end
+
   private
 
   def build_uri(path)
@@ -59,7 +70,10 @@ class DeepStack
     form_data = combine_images_and_args(images.flatten, **args)
     req = Net::HTTP::Post.new(uri)
     req.set_form(form_data, 'multipart/form-data')
-    Net::HTTP.start(uri.hostname, uri.port) { |http| http.request(req) }
+    @http_mutex.synchronize do
+      @http ||= Net::HTTP.start(uri.hostname, uri.port)
+      @http.request(req)
+    end
   end
 
   def combine_images_and_args(*images, **args)
