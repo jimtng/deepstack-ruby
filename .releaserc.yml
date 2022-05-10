@@ -1,0 +1,24 @@
+branches:
+  - main
+tagFormat: "${version}"
+plugins:
+  - - "@semantic-release/commit-analyzer"
+    - releaseRules:
+        - type: refactor
+          release: patch
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/changelog"
+    - changelogTitle: DeepStack Ruby Wrapper Change Log
+      changelogFile: CHANGELOG.md
+  - - semantic-release-rubygem
+    - gemFileDir: pkg/
+      updateGemfileLock: true
+  - - "@semantic-release/git"
+    - assets:
+        - CHANGELOG.md
+        - lib/deepstack/version.rb
+        - Gemfile.lock
+  - - "@semantic-release/github"
+    - assets:
+        - path: "./pkg/deepstack-${nextRelease.version}.gem"
+          label: deepstack Ruby Gem
