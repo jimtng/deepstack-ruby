@@ -15,8 +15,7 @@ class DeepStack
     #
     def recognize_faces(image, **options)
       target = 'vision/face/recognize'
-      api_post(target, image, **options)
-      predictions
+      api_post(target, image, **options)&.dig('predictions')
     end
 
     #
@@ -29,8 +28,7 @@ class DeepStack
     #
     def detect_faces(image, **options)
       target = 'vision/face/' # the URL ends with a slash
-      api_post(target, image, **options)
-      predictions
+      api_post(target, image, **options)&.dig('predictions')
     end
 
     #
@@ -64,8 +62,7 @@ class DeepStack
     #
     def delete_face(userid)
       target = 'vision/face/delete'
-      api_post(target, userid: userid)
-      success?
+      api_post(target, userid: userid)&.dig('success') == true
     end
 
     #
@@ -78,8 +75,7 @@ class DeepStack
     #
     def register_face(userid, *images)
       target = 'vision/face/register'
-      api_post(target, images, userid: userid)
-      success?
+      api_post(target, images, userid: userid)&.dig('success') == true
     end
   end
 end
