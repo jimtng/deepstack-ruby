@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'pp'
 require 'net/http'
 require 'json'
 require_relative 'face'
@@ -16,9 +15,19 @@ class DeepStack
   include DeepStack::Scene
   include DeepStack::Custom
 
+  #
   # Create a deepstack object connected to the given URL
-  def initialize(base_url)
+  #
+  # @param [String] base_url the url to DeepStack's server:port
+  # @param [String] api_key an optional API-KEY to use when connecting to DeepStack
+  # @param [String] admin_key an optional ADMIN-KEY to use when connecting to DeepStack
+  #
+  # @example
+  #   DeepStack.new('http://127.0.0.1:5000')
+  #
+  def initialize(base_url, api_key: nil, admin_key: nil)
     @base_url = base_url
+    @auth = { api_key: api_key, admin_key: admin_key }.select { |_k, v| v } # remove nil values
     @http_mutex = Mutex.new
   end
 
@@ -33,6 +42,7 @@ class DeepStack
   #
   def api_post(path, *images, **args)
     uri = build_uri(path)
+    args = @auth.merge(args)
 
     result = nil
     10.times do
