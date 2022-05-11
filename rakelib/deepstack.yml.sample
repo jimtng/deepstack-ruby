@@ -1,2 +1,3 @@
 # Save this file as rakelib/deepstack.yml to specify a custom port for the test deepstack instance
 deepstack_port: 3333
+deepstack_port_with_auth: 3334

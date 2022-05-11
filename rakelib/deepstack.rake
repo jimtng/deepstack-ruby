@@ -2,45 +2,50 @@
 
 require 'yaml'
 
-def deepstack_port
-  config_file = 'rakelib/deepstack.yml'
-  return 81 unless File.file? config_file
-
-  YAML.load_file(config_file)&.dig('deepstack_port') || 81
-end
-
 # rubocop: disable Metrics/BlockLength
 namespace :deepstack do
   @docker_image = 'deepquestai/deepstack:cpu-2021.09.1'
-  @image_name = 'deepstack_ruby_test'
 
-  def deepstack_running?
-    `(docker ps | grep -q #{@image_name}) && echo running`.chomp == 'running'
+  def deepstack_running?(name)
+    `(docker ps | grep -q #{name}) && echo running`.chomp == 'running'
   end
 
-  desc 'Start deepstack test docker'
-  task :start do
-    next if deepstack_running?
-
-    puts 'Starting DeepStack docker...'
+  def start_deepstack(name, port, **args) # rubocop:disable Methics/MethodLength
     cmd = %(
       docker run
-          --name #{@image_name}
+          --name #{name}
           --rm
+          #{to_cli(args)}
           -d
           -e VISION-FACE=True
           -e VISION-DETECTION=True
           -e VISION-SCENE=True
           -e MODE=Low
-          -p #{deepstack_port}:5000
+          -p #{port}:5000
           #{@docker_image}).gsub(/\s+/, ' ').strip
     `#{cmd}`
+  end
+
+  def to_cli(args)
+    args.select { |_k, v| v }.map do |key, val|
+      "-e #{key.to_s.upcase.sub("_", "-")}=#{val}"
+    end.join(' ')
+  end
+
+  desc 'Start deepstack test docker'
+  task :start do
+    puts 'Starting DeepStack docker...'
+    auth = { api_key: 'myapikey', admin_key: 'myadminkey' }
+    start_deepstack('deepstack_test1', deepstack_port) unless deepstack_running?('deepstack_test1')
+    start_deepstack('deepstack_test2', deepstack_port_with_auth, **auth) unless deepstack_running?('deepstack_test2')
   end
 
   desc 'Stop deepstack test docker'
   task :stop do
     puts 'Stopping DeepStack docker...'
-    `docker stop #{@image_name}` if deepstack_running?
+    %w[deepstack_test1 deepstack_test2].each do |image_name|
+      `docker stop #{image_name}` if deepstack_running?(image_name)
+    end
   end
 end
 # rubocop: enable Metrics/BlockLength
