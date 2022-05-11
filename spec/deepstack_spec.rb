@@ -135,6 +135,12 @@ RSpec.describe DeepStack do
       faces = deepstack.face_list
       expect(faces.size).to eq 0
     end
+
+    it 'can perform face matching' do
+      image2 = image
+      result = deepstack.face_match(image, image2)
+      expect(result).to be_a_kind_of(Numeric)
+    end
   end
 
   context 'Scene Recognition' do

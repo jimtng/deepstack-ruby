@@ -77,5 +77,24 @@ class DeepStack
       target = 'vision/face/register'
       api_post(target, images, userid: userid)&.dig('success') == true
     end
+
+    #
+    # Call DeepStack's Face Match service. Compare two different pictures and tells the similarity between them.
+    #
+    # @example
+    #   image1 = File.read('obama1.jpg')
+    #   image2 = File.read('obama2.jpg')
+    #   puts deepstack.face_match(image1, image2) > 0.6 ? 'similar' : 'different'
+    #
+    # @param [Array] *images two images to compare
+    # @param [kwargs] **args optional arguments to the API call
+    #
+    # @return [Float] The similarity score (0-1)
+    # @return [nil] if failed
+    #
+    def face_match(*images, **args)
+      target = 'vision/face/match'
+      api_post(target, images, **args)&.dig('similarity')
+    end
   end
 end
