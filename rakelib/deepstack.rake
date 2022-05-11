@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require 'yaml'
+require 'pathname'
+require 'net/http'
+require 'open-uri'
 
 # rubocop: disable Metrics/BlockLength
 namespace :deepstack do
@@ -21,6 +24,7 @@ namespace :deepstack do
           -e VISION-DETECTION=True
           -e VISION-SCENE=True
           -e MODE=Low
+          -v #{TMP_DIR}:/modelstore/detection
           -p #{port}:5000
           #{@docker_image}).gsub(/\s+/, ' ').strip
     `#{cmd}`
@@ -32,8 +36,20 @@ namespace :deepstack do
     end.join(' ')
   end
 
+  desc 'Make tmp dir'
+  task :maketmp do
+    Dir.mkdir(TMP_DIR) unless Dir.exist?(TMP_DIR)
+  end
+
+  desc 'Download custom model'
+  task download_model: [:maketmp] do
+    uri = URI('https://github.com/MikeLud/DeepStack-Security-Camera-Models/raw/main/Models/combined.pt')
+    output_file = Pathname.new(TMP_DIR) / File.basename(uri.path)
+    File.open(output_file, 'w') { |file| uri.open { |data| file.write data.read } }
+  end
+
   desc 'Start deepstack test docker'
-  task :start do
+  task start: [:maketmp] do
     puts 'Starting DeepStack docker...'
     auth = { api_key: 'myapikey', admin_key: 'myadminkey' }
     start_deepstack('deepstack_test1', deepstack_port) unless deepstack_running?('deepstack_test1')

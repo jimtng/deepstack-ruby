@@ -54,6 +54,10 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - name: Download and start DeepStack docker
+        run: |
+          bundle exec rake deepstack:download_model
+          bundle exec rake deepstack:start
       - name: Run tests
         run: bundle exec rake
 
