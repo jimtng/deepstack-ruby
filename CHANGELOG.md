@@ -1,5 +1,12 @@
 DeepStack Ruby Wrapper Change Log
 
+## [1.4.0](https://github.com/jimtng/deepstack-ruby/compare/1.3.0...1.4.0) (2022-05-11)
+
+
+### Features
+
+* add face_match support ([04ee418](https://github.com/jimtng/deepstack-ruby/commit/04ee4181a7e5983643b30a52479c83bd378c154f))
+
 ## [1.3.0](https://github.com/jimtng/deepstack-ruby/compare/1.2.0...1.3.0) (2022-05-11)
 
 
