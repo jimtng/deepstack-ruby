@@ -5,7 +5,7 @@ require 'json'
 require_relative 'face'
 require_relative 'detection'
 require_relative 'scene'
-require_relative 'custom'
+require_relative 'custom_model'
 require_relative 'version'
 
 # DeepStack API
@@ -13,7 +13,7 @@ class DeepStack
   include DeepStack::Face
   include DeepStack::Detection
   include DeepStack::Scene
-  include DeepStack::Custom
+  include DeepStack::CustomModel
 
   #
   # Create a deepstack object connected to the given URL
@@ -61,8 +61,7 @@ class DeepStack
   #
   def close
     @http_mutex.synchronize do
-      @http&.finish
-      @http = nil
+      @http.finish if @http&.started?
     end
   end
 
@@ -82,6 +81,7 @@ class DeepStack
     req.set_form(form_data, 'multipart/form-data')
     @http_mutex.synchronize do
       @http ||= Net::HTTP.start(uri.hostname, uri.port)
+      @http.start unless @http.started?
       @http.request(req)
     end
   end
