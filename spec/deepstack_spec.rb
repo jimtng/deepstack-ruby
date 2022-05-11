@@ -7,6 +7,11 @@ require 'pp'
 
 Rake.application.rake_require 'docker_support', ['rakelib']
 
+# http internal is used in persistence check below
+class DeepStack
+  attr_reader :http
+end
+
 def deepstack_baseurl(port)
   "http://127.0.0.1:#{port}"
 end
@@ -25,12 +30,25 @@ RSpec.describe DeepStack do
   image = File.read('spec/test_images/person-dog.jpg')
 
   context 'Basic Usage' do
-    it 'has a version number' do
-      expect(DeepStack::VERSION).not_to be_nil
-    end
-
     it 'can be initialized with a url' do
       expect(deepstack).not_to be_nil
+    end
+
+    it 'can close and reopen its http connection' do
+      result = deepstack.face_list
+      expect(result).to be_an Array
+      expect(deepstack.http.started?).to be true
+      deepstack.close
+      expect(deepstack.http.started?).to be false
+      result = deepstack.face_list
+      expect(deepstack.http.started?).to be true
+      expect(result).to be_an Array
+      expect(deepstack.http.started?).to be true
+    end
+
+    it 'can work with an api key' do
+      result = auth_deepstack.detect_objects(image)
+      expect(result).to be_an Array
     end
   end
 
@@ -128,17 +146,9 @@ RSpec.describe DeepStack do
     end
   end
 
-  context 'HTTP Persistence' do
-    it 'can close and reopen its http connection' do
-      deepstack.close
-      result = deepstack.face_list
-      expect(result).to be_an Array
-    end
-  end
-
-  context 'Authorization' do
-    it 'can work with an api key' do
-      result = auth_deepstack.detect_objects(image)
+  context 'Custom Model' do
+    it 'can use a custom model' do
+      result = deepstack.custom_model('combined', image)
       expect(result).to be_an Array
     end
   end
