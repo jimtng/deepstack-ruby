@@ -1,5 +1,17 @@
 DeepStack Ruby Wrapper Change Log
 
+## [1.3.0](https://github.com/jimtng/deepstack-ruby/compare/1.2.0...1.3.0) (2022-05-11)
+
+
+### Features
+
+* rename custom_inference to custom_model ([1357353](https://github.com/jimtng/deepstack-ruby/commit/1357353de8dded1124351ceb99a221f3925aa248))
+
+
+### Tests
+
+* add test for custom_model ([ad2a98a](https://github.com/jimtng/deepstack-ruby/commit/ad2a98ac2451e07f004cdbad19d9deac1aa9565b))
+
 ## [1.2.0](https://github.com/jimtng/deepstack-ruby/compare/1.1.1...1.2.0) (2022-05-11)
 
 
