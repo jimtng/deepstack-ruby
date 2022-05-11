@@ -1,5 +1,22 @@
 DeepStack Ruby Wrapper Change Log
 
+## [1.2.0](https://github.com/jimtng/deepstack-ruby/compare/1.1.1...1.2.0) (2022-05-11)
+
+
+### Features
+
+* support DeepStack's api key and admin key ([8fd19cd](https://github.com/jimtng/deepstack-ruby/commit/8fd19cdd51f4544a435c4ddd08ff2f8946557872))
+
+
+### Build System
+
+* include refactor into changelog ([7753ce5](https://github.com/jimtng/deepstack-ruby/commit/7753ce598c319fb7f100a280902a169a527ae76a))
+
+
+### Documentation
+
+* update badges ([1b1fc29](https://github.com/jimtng/deepstack-ruby/commit/1b1fc2943daadcb0459395c349308e8d8037dece))
+
 ## [1.1.1](https://github.com/jimtng/deepstack-ruby/compare/1.1.0...1.1.1) (2022-05-10)
 
 
