@@ -20,15 +20,27 @@ class DeepStack
   #
   # @param [String] base_url the url to DeepStack's server:port
   # @param [String] api_key an optional API-KEY to use when connecting to DeepStack
-  # @param [String] admin_key an optional ADMIN-KEY to use when connecting to DeepStack
+  # @param [String] api_key an optional API-KEY to use when connecting to DeepStack
+  # @param [Integer] verify_mode sets the flags for server the certification verification at
+  #                  beginning of SSL/TLS session.
+  #                  +OpenSSL::SSL::VERIFY_NONE+ or +OpenSSL::SSL::VERIFY_PEER+ are acceptable.
   #
   # @example
   #   DeepStack.new('http://127.0.0.1:5000')
   #
-  def initialize(base_url, api_key: nil, admin_key: nil)
+  #   # Using API KEY:
+  #   DeepStack.new('http://127.0.0.1:5000', api_key: 'secret', admin_key: 'supersecret')
+  #
+  #   # Connect to SSL with a self-signed certificate
+  #   DeepStack.new('https://localhost:443', verify_mode: OpenSSL::SSL::VERIFY_NONE)
+  #
+  def initialize(base_url, api_key: nil, admin_key: nil, verify_mode: nil)
     @base_url = base_url
     @auth = { api_key: api_key, admin_key: admin_key }.select { |_k, v| v } # remove nil values
-    @http_mutex = Mutex.new
+    uri = URI(base_url)
+    http_options = {}
+    http_options[:verify_mode] = verify_mode if verify_mode
+    @http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.instance_of?(URI::HTTPS), **http_options)
   end
 
   #
@@ -60,9 +72,7 @@ class DeepStack
   # Close the HTTP connection to DeepStack server
   #
   def close
-    @http_mutex.synchronize do
-      @http.finish if @http&.started?
-    end
+    @http.finish if @http&.started?
   end
 
   private
@@ -79,11 +89,8 @@ class DeepStack
     form_data = combine_images_and_args(images.flatten, **args)
     req = Net::HTTP::Post.new(uri)
     req.set_form(form_data, 'multipart/form-data')
-    @http_mutex.synchronize do
-      @http ||= Net::HTTP.start(uri.hostname, uri.port)
-      @http.start unless @http.started?
-      @http.request(req)
-    end
+    @http.start unless @http.started?
+    @http.request(req)
   end
 
   def combine_images_and_args(*images, **args)
