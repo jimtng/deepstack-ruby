@@ -1,5 +1,12 @@
 DeepStack Ruby Wrapper Change Log
 
+## [1.6.0](https://github.com/jimtng/deepstack-ruby/compare/1.5.0...1.6.0) (2022-05-12)
+
+
+### Features
+
+* support image enhancer ([b6af208](https://github.com/jimtng/deepstack-ruby/commit/b6af20819987b3b5fc1b62193b657395072dc13b))
+
 ## [1.5.0](https://github.com/jimtng/deepstack-ruby/compare/1.4.0...1.5.0) (2022-05-12)
 
 
