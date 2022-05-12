@@ -118,6 +118,22 @@ RSpec.describe DeepStack do
       expect(faces.size).to be > face_count_before
     end
 
+    it 'can register multiple faces/users' do
+      deepstack.delete_faces(deepstack.face_list)
+      faces = deepstack.face_list
+      expect(faces.size).to be 0
+
+      3.times do |i|
+        deepstack.register_face("user#{i}", image)
+      end
+      faces = deepstack.face_list
+      expect(faces.size).to be 3
+
+      3.times do |i|
+        expect(faces).to include "user#{i}"
+      end
+    end
+
     it 'can recognize faces from an image' do
       result = deepstack.recognize_faces(image)
       # pp result
