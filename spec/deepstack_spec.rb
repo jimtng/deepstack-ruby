@@ -173,6 +173,14 @@ RSpec.describe DeepStack do
     end
   end
 
+  # context 'Image Enhancer' do
+  #   # before { skip('Skipping because this test is slow') }
+  #   it 'can enhance image' do
+  #     result = deepstack.enhance_image(image)
+  #     expect(result).to be_truthy
+  #   end
+  # end
+
   context 'Custom Model' do
     it 'can use a custom model' do
       result = deepstack.custom_model('combined', image)

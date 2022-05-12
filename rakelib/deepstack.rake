@@ -16,7 +16,7 @@ namespace :deepstack do
     "#{TMP_DIR}/#{subdir}".tap { |dir| Dir.mkdir(dir) unless Dir.exist?(dir) }
   end
 
-  def start_deepstack(name, port, ssl: false, **args) # rubocop:disable Methics/MethodLength
+  def start_deepstack(name, port, ssl: false, **args) # rubocop:disable Metrics/MethodLength
     return if deepstack_running? name
 
     internal_port = 5000
@@ -33,6 +33,7 @@ namespace :deepstack do
           -e VISION-FACE=True
           -e VISION-DETECTION=True
           -e VISION-SCENE=True
+          -e VISION-ENHANCE=True
           -e MODE=Low
           -v #{TMP_DIR}/models:/modelstore/detection
           #{cert}

@@ -6,6 +6,7 @@ require_relative 'face'
 require_relative 'detection'
 require_relative 'scene'
 require_relative 'custom_model'
+require_relative 'image'
 require_relative 'version'
 
 # DeepStack API
@@ -13,6 +14,7 @@ class DeepStack
   include DeepStack::Face
   include DeepStack::Detection
   include DeepStack::Scene
+  include DeepStack::Image
   include DeepStack::CustomModel
 
   #
