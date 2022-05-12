@@ -1,17 +1,23 @@
 # frozen_string_literal: true
 
-def deepstack_port
+require 'yaml'
+
+def port # rubocop:disable Metrics/MethodLength
+  # default ports to use unless overridden by the config file
+  @ports ||= {
+    defaults: true,
+    no_auth: { http: 81, https: 82 },
+    auth: { http: 83, https: 84 }
+  }
+
+  return @ports unless @ports[:defaults]
+
+  @ports.delete(:defaults)
   config_file = 'rakelib/deepstack.yml'
-  default = 81
-  return default unless File.file? config_file
-
-  YAML.load_file(config_file)&.dig('deepstack_port') || default
-end
-
-def deepstack_port_with_auth
-  config_file = 'rakelib/deepstack.yml'
-  default = 82
-  return default unless File.file? config_file
-
-  YAML.load_file(config_file)&.dig('deepstack_port_with_auth') || default
+  if File.file? config_file
+    file = File.read(config_file)
+    config = YAML.safe_load(file, symbolize_names: true)[:ports]
+    @ports.merge!(config)
+  end
+  @ports
 end

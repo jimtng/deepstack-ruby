@@ -1,28 +1,28 @@
 # frozen_string_literal: true
 
 require 'rake'
-require 'deepstack'
-require 'yaml'
 require 'pp'
+require 'deepstack'
 
 Rake.application.rake_require 'docker_support', ['rakelib']
 
-# http internal is used in persistence check below
+# http is used in persistence check below
 class DeepStack
   attr_reader :http
 end
 
-def deepstack_baseurl(port)
-  "http://127.0.0.1:#{port}"
-end
-
 def deepstack
-  @deepstack ||= DeepStack.new(deepstack_baseurl(deepstack_port))
+  @deepstack ||= DeepStack.new("http://localhost:#{port[:no_auth][:http]}")
 end
 
 def auth_deepstack
-  @auth_deepstack ||= DeepStack.new(deepstack_baseurl(deepstack_port_with_auth), api_key: 'myapikey',
-                                                                                 admin_key: 'myadminkey')
+  @auth_deepstack ||= DeepStack.new("http://localhost:#{port[:auth][:http]}", api_key: 'myapikey',
+                                                                              admin_key: 'myadminkey')
+end
+
+def deepstack_ssl
+  @deepstack_ssl ||= DeepStack.new("https://localhost:#{port[:no_auth][:https]}",
+                                   verify_mode: OpenSSL::SSL::VERIFY_NONE)
 end
 
 # rubocop:disable Metrics/BlockLength
@@ -48,6 +48,11 @@ RSpec.describe DeepStack do
 
     it 'can work with an api key' do
       result = auth_deepstack.detect_objects(image)
+      expect(result).to be_an Array
+    end
+
+    it 'can use ssl' do
+      result = deepstack_ssl.face_list
       expect(result).to be_an Array
     end
   end
@@ -111,6 +116,22 @@ RSpec.describe DeepStack do
       faces = deepstack.face_list
       expect(faces).to include 'user3'
       expect(faces.size).to be > face_count_before
+    end
+
+    it 'can register multiple faces/users' do
+      deepstack.delete_faces(deepstack.face_list)
+      faces = deepstack.face_list
+      expect(faces.size).to be 0
+
+      3.times do |i|
+        deepstack.register_face("user#{i}", image)
+      end
+      faces = deepstack.face_list
+      expect(faces.size).to be 3
+
+      3.times do |i|
+        expect(faces).to include "user#{i}"
+      end
     end
 
     it 'can recognize faces from an image' do
