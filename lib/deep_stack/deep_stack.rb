@@ -71,7 +71,9 @@ class DeepStack
   end
 
   #
-  # Close the HTTP connection to DeepStack server
+  # Close the persistent HTTP connection to DeepStack server. This should be called after
+  # a period of inactivity to close the TCP connection. Subsequent API calls will
+  # re-open the connection automatically.
   #
   def close
     @http.finish if @http&.started?
