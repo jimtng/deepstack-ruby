@@ -1,5 +1,17 @@
 DeepStack Ruby Wrapper Change Log
 
+## [1.5.0](https://github.com/jimtng/deepstack-ruby/compare/1.4.0...1.5.0) (2022-05-12)
+
+
+### Features
+
+* support SSL connection ([16af296](https://github.com/jimtng/deepstack-ruby/commit/16af29643ebf449b3365cf8d20be6b4390f0dcad))
+
+
+### Tests
+
+* add a test to register multiple faces ([10fd0ef](https://github.com/jimtng/deepstack-ruby/commit/10fd0efbb8aff79578900dc2a39da69c51df129c))
+
 ## [1.4.0](https://github.com/jimtng/deepstack-ruby/compare/1.3.0...1.4.0) (2022-05-11)
 
 
