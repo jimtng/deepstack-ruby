@@ -9,7 +9,12 @@ require_relative 'custom_model'
 require_relative 'image'
 require_relative 'version'
 
-# DeepStack API
+#
+# DeepStack API wrapper
+#
+# All the methods that communicate with the server can raise an +Errno::ECONNREFUSED+ exception
+# if the server is down or the connection details are incorrect.
+#
 class DeepStack
   include DeepStack::Face
   include DeepStack::Detection
@@ -21,19 +26,20 @@ class DeepStack
   # Create a deepstack object connected to the given URL
   #
   # @param [String] base_url the url to DeepStack's server:port
-  # @param [String] api_key an optional API-KEY to use when connecting to DeepStack
-  # @param [String] api_key an optional API-KEY to use when connecting to DeepStack
+  # @param [String] api_key an optional +API-KEY+ to use when connecting to DeepStack
+  # @param [String] admin_key an optional +ADMIN-KEY+ to use when connecting to DeepStack
   # @param [Integer] verify_mode sets the flags for server the certification verification at
-  #                  beginning of SSL/TLS session.
+  #                  beginning of an SSL/TLS session.
   #                  +OpenSSL::SSL::VERIFY_NONE+ or +OpenSSL::SSL::VERIFY_PEER+ are acceptable.
+  #                  The default is +OpenSSL::SSL::VERIFY_PEER+.
   #
   # @example
   #   DeepStack.new('http://127.0.0.1:5000')
   #
-  #   # Using API KEY:
+  #   # Using an API KEY
   #   DeepStack.new('http://127.0.0.1:5000', api_key: 'secret', admin_key: 'supersecret')
   #
-  #   # Connect to SSL with a self-signed certificate
+  #   # SSL connection with a self-signed certificate
   #   DeepStack.new('https://localhost:443', verify_mode: OpenSSL::SSL::VERIFY_NONE)
   #
   def initialize(base_url, api_key: nil, admin_key: nil, verify_mode: nil)
@@ -71,7 +77,9 @@ class DeepStack
   end
 
   #
-  # Close the HTTP connection to DeepStack server
+  # Close the persistent HTTP connection to DeepStack server. This should be called after
+  # a period of inactivity to close the TCP connection. Subsequent API calls will
+  # re-open the connection automatically.
   #
   def close
     @http.finish if @http&.started?
