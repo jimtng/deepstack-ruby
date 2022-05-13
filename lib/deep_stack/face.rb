@@ -86,8 +86,8 @@ class DeepStack
     #   image2 = File.read('obama2.jpg')
     #   puts deepstack.face_match(image1, image2) > 0.6 ? 'similar' : 'different'
     #
-    # @param [Array] *images two images to compare
-    # @param [kwargs] **args optional arguments to the API call
+    # @param [Array] images two images to compare
+    # @param [kwargs] args optional arguments to the API call
     #
     # @return [Float] The similarity score (0-1)
     # @return [nil] if failed

@@ -2,13 +2,15 @@
 
 require 'open-uri'
 
+TMP_DIR = File.expand_path('tmp')
+
 # rubocop: disable Metrics/BlockLength
 namespace :deepstack do
   # @docker_image = 'deepquestai/deepstack:cpu-2021.09.1'
   @docker_image = 'deepquestai/deepstack:cpu-2022.01.1'
 
   def deepstack_running?(name)
-    `(docker ps | grep -q #{name}) && echo running`.chomp == 'running'
+    system("docker ps | grep -q #{name}")
   end
 
   def tmp_dir(subdir = nil)
@@ -19,6 +21,7 @@ namespace :deepstack do
   def start_deepstack(name, port, ssl: false, **args) # rubocop:disable Metrics/MethodLength
     return if deepstack_running? name
 
+    puts "Starting #{name}"
     internal_port = 5000
     if ssl
       internal_port = 443
@@ -38,7 +41,8 @@ namespace :deepstack do
           -v #{TMP_DIR}/models:/modelstore/detection
           #{cert}
           -p #{port}:#{internal_port}
-          #{@docker_image}).gsub(/\s+/, ' ').strip
+          #{@docker_image}
+        ).gsub(/\s+/, ' ').strip
     `#{cmd}`
   end
 
@@ -46,6 +50,13 @@ namespace :deepstack do
     args.select { |_k, v| v }.map do |key, val|
       "-e #{key.to_s.upcase.sub("_", "-")}=#{val}"
     end.join(' ')
+  end
+
+  def stop_deepstack(image_name)
+    return unless deepstack_running?(image_name)
+
+    puts "Stopping #{image_name}"
+    `docker stop #{image_name}`
   end
 
   desc 'Download custom model'
@@ -78,19 +89,27 @@ namespace :deepstack do
 
   desc 'Start deepstack test docker'
   task start: %i[cert download_model] do
-    puts 'Starting DeepStack docker...'
     auth = { api_key: 'myapikey', admin_key: 'myadminkey' }
     start_deepstack('deepstack_test_noauth', port[:no_auth][:http])
     start_deepstack('deepstack_test_auth', port[:auth][:http], **auth)
     start_deepstack('deepstack_test_ssl', port[:no_auth][:https], ssl: true)
   end
 
+  task :stop1 do
+    stop_deepstack('deepstack_test_noauth')
+  end
+
+  task :stop2 do
+    stop_deepstack('deepstack_test_auth')
+  end
+
+  task :stop3 do
+    stop_deepstack('deepstack_test_ssl')
+  end
+
   desc 'Stop deepstack test docker'
-  task :stop do
-    puts 'Stopping DeepStack docker...'
-    %w[deepstack_test_noauth deepstack_test_auth deepstack_test_ssl].each do |image_name|
-      `docker stop #{image_name}` if deepstack_running?(image_name)
-    end
+  multitask stop: %i[stop1 stop2 stop3] do
+    puts 'Stopped'
   end
 end
 # rubocop: enable Metrics/BlockLength
