@@ -59,10 +59,9 @@ RSpec.describe DeepStack do
       expect(result).to be_an Array
 
       Rake::Task['deepstack:stop1'].execute
-
       expect { deepstack.face_list }.to raise_exception(Errno::ECONNREFUSED)
-
       Rake::Task['deepstack:start'].execute
+      sleep 1
 
       result = deepstack.face_list
       expect(result).to be_an Array
