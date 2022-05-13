@@ -5,6 +5,7 @@ require 'pp'
 require 'deepstack'
 
 Rake.application.rake_require 'docker_support', ['rakelib']
+Rake.application.rake_require 'deepstack', ['rakelib']
 
 # http is used in persistence check below
 class DeepStack
@@ -23,6 +24,13 @@ end
 def deepstack_ssl
   @deepstack_ssl ||= DeepStack.new("https://localhost:#{port[:no_auth][:https]}",
                                    verify_mode: OpenSSL::SSL::VERIFY_NONE)
+end
+
+def restart_deepstack_server
+  Rake::Task['deepstack:stop1'].execute
+  Rake::Task['deepstack:stop2'].execute
+  Rake::Task['deepstack:stop3'].execute
+  Rake::Task['deepstack:start'].execute
 end
 
 # rubocop:disable Metrics/BlockLength
@@ -44,6 +52,20 @@ RSpec.describe DeepStack do
       expect(deepstack.http.started?).to be true
       expect(result).to be_an Array
       expect(deepstack.http.started?).to be true
+    end
+
+    it 'can recover from a server restart' do
+      result = deepstack.face_list
+      expect(result).to be_an Array
+
+      Rake::Task['deepstack:stop1'].execute
+
+      expect { deepstack.face_list }.to raise_exception(Errno::ECONNREFUSED)
+
+      Rake::Task['deepstack:start'].execute
+
+      result = deepstack.face_list
+      expect(result).to be_an Array
     end
 
     it 'can work with an api key' do
