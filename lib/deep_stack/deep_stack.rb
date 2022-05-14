@@ -23,7 +23,11 @@ class DeepStack
   include DeepStack::CustomModel
 
   #
-  # Create a deepstack object connected to the given URL
+  # Create a deepstack object for the given server URL. HTTP connections are not made within the constructor
+  # so the deepstack object can be created against a server that's currently down without
+  # raising an exception.
+  #
+  # A persistent HTTP connection will be initiated on the first method request.
   #
   # @param [String] base_url the url to DeepStack's server:port
   # @param [String] api_key an optional +API-KEY+ to use when connecting to DeepStack
@@ -46,9 +50,9 @@ class DeepStack
     @base_url = base_url
     @auth = { api_key: api_key, admin_key: admin_key }.select { |_k, v| v } # remove nil values
     uri = URI(base_url)
-    http_options = {}
-    http_options[:verify_mode] = verify_mode if verify_mode
-    @http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.instance_of?(URI::HTTPS), **http_options)
+    @http = Net::HTTP.new(uri.hostname, uri.port)
+    @http.use_ssl = uri.instance_of?(URI::HTTPS)
+    @http.verify_mode = verify_mode if verify_mode
   end
 
   #
