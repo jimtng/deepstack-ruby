@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    deepstack (1.6.0)
+    deepstack (1.6.1)
 
 GEM
   remote: https://rubygems.org/

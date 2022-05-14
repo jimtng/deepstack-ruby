@@ -1,5 +1,24 @@
 DeepStack Ruby Wrapper Change Log
 
+### [1.6.1](https://github.com/jimtng/deepstack-ruby/compare/1.6.0...1.6.1) (2022-05-14)
+
+
+### Bug Fixes
+
+* do not start http in constructor ([d99cbd1](https://github.com/jimtng/deepstack-ruby/commit/d99cbd1dcd66ff7fc238a467fdb1e1e7dfb611fe))
+
+
+### Tests
+
+* add a delay after restart ([e68b184](https://github.com/jimtng/deepstack-ruby/commit/e68b1842a96150ef647c9a75050a4bd2d19cc0ee))
+* test ability to work after a server restart ([bf8d126](https://github.com/jimtng/deepstack-ruby/commit/bf8d12656a70ee65e257336a8cbc0abe2763b84a))
+
+
+### Documentation
+
+* add readme to gemspec ([3f4b46d](https://github.com/jimtng/deepstack-ruby/commit/3f4b46d45958745aa2881c1bf4028b5206ede687))
+* fix params descriptions ([5687fda](https://github.com/jimtng/deepstack-ruby/commit/5687fda06baa18d2132792b4c6c2ce401dfd67cc))
+
 ## [1.6.0](https://github.com/jimtng/deepstack-ruby/compare/1.5.0...1.6.0) (2022-05-12)
 
 
