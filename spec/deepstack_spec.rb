@@ -76,6 +76,11 @@ RSpec.describe DeepStack do
       result = deepstack_ssl.face_list
       expect(result).to be_an Array
     end
+
+    it 'does not raise an exception in its constructor' do
+      result = DeepStack.new('http://192.168.254.254')
+      expect(result).to be_truthy
+    end
   end
 
   context 'Object Detection' do
